@@ -1,10 +1,16 @@
 module Main exposing (..)
 
+import Array exposing (Array)
 import Bootstrap.CDN as CDN
 import Bootstrap.Form as Form
 import Bootstrap.Form.Input as Input
 import Bootstrap.Form.Textarea as Textarea
 import Bootstrap.Grid as Grid
+import Bootstrap.Grid.Col as Col
+import Char
+import Debug
+import Dict exposing (Dict)
+import Hashids exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
@@ -33,12 +39,21 @@ type Msg
     | ChangeMultiValue String
 
 
+hashids =
+    hashidsSimple "banana"
+
+
 encodeValue : String -> String
 encodeValue value =
     if value == "" then
         ""
     else
-        MD5.hex value
+        case String.toInt value of
+            Ok num ->
+                encodeList hashids [ 1, 26, num ]
+
+            Err _ ->
+                ""
 
 
 update : Msg -> Model -> Model
@@ -77,11 +92,11 @@ view model =
         , Grid.row []
             [ Grid.col []
                 [ Form.form []
-                    [ Form.group []
-                        [ Form.label [] [ text "value" ]
+                    [ Form.group [ Form.groupSuccess ]
+                        [ Form.label [] [ text "number" ]
                         , Input.text
                             [ Input.attrs
-                                [ value model.value
+                                [ defaultValue model.value
                                 , onInput ChangeValue
                                 ]
                             ]
@@ -91,7 +106,7 @@ view model =
                                 [ Textarea.attrs
                                     [ style [ ( "height", "500px" ) ]
                                     , onInput ChangeMultiValue
-                                    , value (String.join "\n" model.values)
+                                    , defaultValue (String.join "\n" model.values)
                                     ]
                                 ]
                             ]

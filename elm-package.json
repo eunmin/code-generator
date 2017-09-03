@@ -10,6 +10,7 @@
     "dependencies": {
         "elm-lang/core": "5.1.1 <= v < 6.0.0",
         "elm-lang/html": "2.0.0 <= v < 3.0.0",
+        "pdamoc/elm-hashids": "1.0.3 <= v < 2.0.0",
         "rundis/elm-bootstrap": "3.0.0 <= v < 4.0.0",
         "sanichi/elm-md5": "1.0.6 <= v < 2.0.0"
     },
